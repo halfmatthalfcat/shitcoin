@@ -30,7 +30,7 @@ const window: (delay: number) => Stream<Stream<void>> =
 export const rateInterval: <A extends object>(interval: number, prop: keyof A, minLength?: number) => (stream: Stream<A>) => Stream<number> =
   <A extends object>(interval: number, prop: keyof A, minLength: number = 5) => (stream: Stream<A>): Stream<number> =>
     stream
-      .map((obj: A) => parseFloat(obj[prop]))
+      .map((obj: A) => parseFloat((obj[prop] as unknown) as string))
       // Filter out 0s
       .filter((value: number) => !!value)
       .thru((s: Stream<number>) => fromPromise(accRate(interval, s)))

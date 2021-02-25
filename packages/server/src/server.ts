@@ -41,7 +41,7 @@ interface Prices {
   minutePrice: number;
 }
 
-interface Metric {
+export interface Metric {
   second: {
     mood: number;
     price: number;

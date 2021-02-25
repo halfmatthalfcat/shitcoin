@@ -2,6 +2,8 @@
  * GDAX Websocket
  */
 
+const prod: boolean = process.argv.includes('--prod');
+
 import { fromEvent, Stream } from 'most';
 import * as Websocket from 'ws';
 
@@ -17,7 +19,10 @@ export class GdaxSocket<T extends GdaxMessage> {
   private socket: Websocket;
 
   constructor(private opts: GdaxSocketOpts) {
-    this.socket = new Websocket('wss://ws-feed.gdax.com');
+    this.socket = new Websocket(prod
+      ? 'wss://ws-feed.pro.coinbase.com'
+      : 'wss://ws-feed-public.sandbox.pro.coinbase.com'
+    );
 
     this.socket.on('open', () => {
       if (this.socket.readyState === Websocket.OPEN) {
